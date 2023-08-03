@@ -27,6 +27,23 @@ class Controller {
             next(err);
         }
     }
+
+    static async loginUser(req, res, next) {
+        try {
+            const { email, password } = req.body;
+            if (!email) throw { name: "MissingEmail" };
+            if (!password) throw { name: "MissingPassword" };
+
+            const user = await User.findOne({ where: { email } });
+            if (!user) throw { name: "InvalidEmail" };
+            if (!bcrypt.compareSync(password, user.password)) throw { name: "InvalidPassword" };
+
+            const access_token = signToken(user);
+            res.status(200).json({ access_token, user: { name: user.name, email: user.email } });
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 module.exports = Controller;
