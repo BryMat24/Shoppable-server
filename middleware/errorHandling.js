@@ -32,5 +32,10 @@ module.exports = (err, req, res, next) => {
         code = 404;
     }
 
+    else if (err.name === "InvalidToken" || err.name === "JsonWebTokenError") {
+        message = "Invalid token";
+        code = 401;
+    }
+
     res.status(code).json({ message });
 }
