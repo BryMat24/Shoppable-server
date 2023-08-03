@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Category);
       Product.belongsToMany(models.User, { through: models.Wishlist, as: "Wishlists" });
       Product.belongsToMany(models.User, { through: models.Cart, as: "Products" });
+      Product.hasMany(models.OrderDetail);
     }
   }
   Product.init({
