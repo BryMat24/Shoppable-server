@@ -27,5 +27,10 @@ module.exports = (err, req, res, next) => {
         code = 400;
     }
 
+    else if (err.name === "NotFound") {
+        message = "Data not found";
+        code = 404;
+    }
+
     res.status(code).json({ message });
 }
