@@ -27,14 +27,29 @@ module.exports = (err, req, res, next) => {
         code = 400;
     }
 
+    else if (err.name === "InvalidToken" || err.name === "JsonWebTokenError") {
+        message = "Invalid token";
+        code = 401;
+    }
+
+    else if (err.name === "MidtransError") {
+        message = "Midtrans error";
+        code = 400;
+    }
+
     else if (err.name === "NotFound") {
         message = "Data not found";
         code = 404;
     }
 
-    else if (err.name === "InvalidToken" || err.name === "JsonWebTokenError") {
-        message = "Invalid token";
-        code = 401;
+    else if (err.name === 'DuplicateWishlistError') {
+        message = "Item already exist in wishlist";
+        code = 403;
+    }
+
+    else if (err.name === "InvalidPaymentAmount") {
+        message = "Invalid payment amount";
+        code = 400;
     }
 
     res.status(code).json({ message });
