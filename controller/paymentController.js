@@ -27,7 +27,7 @@ class Controller {
 
             let parameter = {
                 "transaction_details": {
-                    "order_id": `order-${order.id}`,
+                    "order_id": `order-${order.id}-development`,
                     "gross_amount": `${amount}`
                 },
                 "credit_card": {
@@ -41,6 +41,7 @@ class Controller {
             const midtransToken = await snap.createTransaction(parameter);
             res.status(200).json({ midtransToken, orderId: order.id });
         } catch (err) {
+            consoler.log(err);
             next(err);
         }
     }
