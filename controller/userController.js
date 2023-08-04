@@ -39,7 +39,7 @@ class Controller {
             if (!bcrypt.compareSync(password, user.password)) throw { name: "InvalidPassword" };
 
             const access_token = signToken(user);
-            res.status(200).json({ access_token, user: { name: user.name, email: user.email } });
+            res.status(200).json({ access_token, user: { email: user.email } });
         } catch (err) {
             next(err);
         }
