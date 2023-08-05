@@ -48,6 +48,19 @@ module.exports = (sequelize, DataTypes) => {
                     msg: "Password length minimum 8 characters"
                 }
             }
+        },
+        isVerified: DataTypes.BOOLEAN,
+        emailToken: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Email token is required'
+                },
+                notNull: {
+                    msg: 'Email token is required'
+                }
+            }
         }
     }, {
         sequelize,
