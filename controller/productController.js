@@ -37,9 +37,19 @@ class Controller {
         }
     }
 
+    static async getProductByTitle(req, res, next) {
+        try {
+            const { title } = req.body;
+            const product = await Product.findOne({ where: { title } })
+            if (!product) throw { name: "NotFound" }
+            res.status(200).json(product);
+        } catch (err) {
+            next(err);
+        }
+    }
+
     static async getNewestProducts(req, res, next) {
         try {
-            console.log("test");
             const products = await Product.findAll({
                 order: [['createdAt', 'DESC']],
                 limit: 3
@@ -47,7 +57,6 @@ class Controller {
 
             res.status(200).json(products);
         } catch (err) {
-            console.log(err);
             next(err);
         }
     }
