@@ -65,7 +65,7 @@ class Controller {
         }
     }
 
-    static async getProducts(req, res, next) {
+    static async getFilteredProducts(req, res, next) {
         try {
             const page = req.query.page || 1;
             const categoryId = req.query.categoryId;
