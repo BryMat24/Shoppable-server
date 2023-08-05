@@ -17,6 +17,7 @@ class Controller {
 
     static async addToCart(req, res, next) {
         try {
+            const { quantity } = req.body;
             const productId = req.params.ProductId;
             const product = await Product.findByPk(productId);
             if (!product) throw { name: "NotFound" }
@@ -29,17 +30,19 @@ class Controller {
             })
 
             if (cart) {
-                const currentProductQuantity = cart.quantity + 1;
+                const currentProductQuantity = quantity ? quantity : cart.quantity + 1;
                 await cart.update({ quantity: currentProductQuantity })
-            } else {
+            } else if (!cart) {
                 await Cart.create({
                     UserId: req.user.id,
-                    ProductId: productId
+                    ProductId: productId,
+                    quantity
                 })
             }
 
             res.status(201).json({ message: "Product has been added to cart" })
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
