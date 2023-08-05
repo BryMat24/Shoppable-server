@@ -41,7 +41,7 @@ class Controller {
             const midtransToken = await snap.createTransaction(parameter);
             res.status(200).json({ midtransToken, orderId: order.id });
         } catch (err) {
-            consoler.log(err);
+            console.log(err);
             next(err);
         }
     }

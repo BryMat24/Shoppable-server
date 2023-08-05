@@ -29,7 +29,6 @@ class Controller {
             transporter.sendMail(mailOptions);
             res.status(201).json({ id: user.id, email: user.email }); // send the email
         } catch (err) {
-            console.log(err);
             next(err);
         }
     }
@@ -41,7 +40,8 @@ class Controller {
             const user = await User.findOne({ where: { emailToken } });
             if (!user) throw { name: "InvalidEmail" }
             await user.update({ isVerified: true });
-            res.status(200).json({ message: "Email verified successfully." });
+
+            res.status(200).redirect('http://localhost:5173/login');
         } catch (err) {
             console.log(err);
             next(err)
