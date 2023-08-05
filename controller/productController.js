@@ -1,5 +1,5 @@
 const { Product } = require('../models');
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 class Controller {
     static async getProductDetail(req, res, next) {
@@ -9,6 +9,29 @@ class Controller {
             if (!product) throw { name: "NotFound" };
 
             res.status(200).json(product);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async getSimilarProducts(req, res, next) {
+        try {
+            const productId = req.params.productId;
+            const product = await Product.findByPk(productId);
+            if (!product) throw { name: 'NotFound' };
+
+            const similarProducts = await Product.findAll({
+                where: {
+                    CategoryId: product.CategoryId,
+                    id: {
+                        [Op.ne]: productId
+                    }
+                },
+                order: [[Sequelize.fn('RANDOM')]],
+                limit: 2,
+            })
+
+            res.status(200).json(similarProducts);
         } catch (err) {
             next(err);
         }
