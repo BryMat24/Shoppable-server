@@ -25,9 +25,12 @@ class Controller {
                 serverKey: `${process.env.MIDTRANS_SERVER_KEY}`
             });
 
+            const timeStamp = Date.now();
+            const randomNumber = Math.floor(Math.random * 100000)
+
             let parameter = {
                 "transaction_details": {
-                    "order_id": `order-${order.id}-development`,
+                    "order_id": `${timeStamp}-${randomNumber}`,
                     "gross_amount": `${amount}`
                 },
                 "credit_card": {
