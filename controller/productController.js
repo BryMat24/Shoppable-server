@@ -28,10 +28,38 @@ class Controller {
                     }
                 },
                 order: [[Sequelize.fn('RANDOM')]],
-                limit: 2,
+                limit: 4,
             })
 
             res.status(200).json(similarProducts);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async getNewestProducts(req, res, next) {
+        try {
+            console.log("test");
+            const products = await Product.findAll({
+                order: [['createdAt', 'DESC']],
+                limit: 3
+            })
+
+            res.status(200).json(products);
+        } catch (err) {
+            console.log(err);
+            next(err);
+        }
+    }
+
+    static async getTopRatedProducts(req, res, next) {
+        try {
+            const products = await Product.findAll({
+                order: [['rating', 'DESC']],
+                limit: 3
+            })
+
+            res.status(200).json(products);
         } catch (err) {
             next(err);
         }
