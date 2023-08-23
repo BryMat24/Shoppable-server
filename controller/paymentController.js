@@ -1,15 +1,18 @@
 const midtransClient = require('midtrans-client');
-const { Cart, Order, OrderDetail } = require('../models');
+const { Cart, Order, OrderDetail, Address } = require('../models');
 
 
 class Controller {
     static async processPayment(req, res, next) {
         try {
-            const { amount } = req.body;
+            const { amount, address } = req.body;
+            const { streetAddress, city, state, country, postalCode } = address;
+
             if (!amount) throw { name: "InvalidPaymentAmount" }
 
+            const userAddress = await Address.create({ streetAddress, city, state, country, postalCode, UserId: req.user.id });
             const cart = await Cart.findAll({ where: { UserId: req.user.id } });
-            const order = await Order.create({ UserId: req.user.id });
+            const order = await Order.create({ UserId: req.user.id, AddressId: userAddress.id });
             const orderDetail = cart.map((el) => {
                 return {
                     OrderId: order.id,
