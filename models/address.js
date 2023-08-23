@@ -15,12 +15,47 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Address.init({
-    streetAddress: DataTypes.STRING,
-    city: DataTypes.STRING,
+    streetAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "street cannot be empty"
+        },
+        notEmpty: {
+          msg: "street cannot be empty"
+        }
+      }
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "city cannot be empty"
+        },
+        notEmpty: {
+          msg: "city cannot be empty"
+        }
+      }
+    },
     state: DataTypes.STRING,
     postalCode: DataTypes.STRING,
-    country: DataTypes.STRING,
-    UserId: DataTypes.INTEGER
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "country is required"
+        },
+        notEmpty: {
+          msg: "country is required"
+        }
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Address',
