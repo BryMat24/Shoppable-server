@@ -1,4 +1,4 @@
-const { Order, OrderDetail, Product } = require('../models');
+const { Order, OrderDetail, Product, Address } = require('../models');
 
 class Controller {
     static async updateStatusOrder(req, res, next) {
@@ -19,6 +19,9 @@ class Controller {
                 where: {
                     UserId: req.user.id,
                     paymentStatus: 'paid',
+                },
+                include: {
+                    model: Address
                 },
                 order: [['updatedAt', 'DESC']]
             });
