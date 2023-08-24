@@ -36,14 +36,12 @@ class Controller {
     static async verifyEmail(req, res, next) {
         try {
             const { emailToken } = req.query;
-            console.log(emailToken);
             const user = await User.findOne({ where: { emailToken } });
             if (!user) throw { name: "InvalidEmail" }
             await user.update({ isVerified: true });
 
-            res.status(200).redirect('http://localhost:5173/login');
+            res.sendStatus(200);
         } catch (err) {
-            console.log(err);
             next(err)
         }
     }
@@ -55,7 +53,8 @@ class Controller {
             if (!password) throw { name: "MissingPassword" };
 
             const user = await User.findOne({ where: { email } });
-            if (!user || !user.isVerified) throw { name: "InvalidEmail" };
+            if (!user) throw { name: "InvalidEmail" };
+            if (!user.isVerified) throw { name: "notVerified" }
             if (!bcrypt.compareSync(password, user.password)) throw { name: "InvalidPassword" };
 
             const access_token = signToken(user);

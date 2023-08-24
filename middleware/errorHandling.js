@@ -53,5 +53,10 @@ module.exports = (err, req, res, next) => {
         code = 400;
     }
 
+    else if (err.name === "notVerified") {
+        message = "Please verify your email first!"
+        code = 400;
+    }
+
     res.status(code).json({ message });
 }
