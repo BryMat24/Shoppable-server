@@ -6,11 +6,11 @@ class Controller {
         const t = await sequelize.transaction();
         try {
             const { amount, address } = req.body;
-            const { streetAddress, city, state, country, postalCode } = address;
+            const { street, city, state, country, postalCode } = address;
 
             if (!amount) throw { name: "InvalidPaymentAmount" }
 
-            const userAddress = await Address.create({ streetAddress, city, state, country, postalCode, UserId: req.user.id });
+            const userAddress = await Address.create({ street, city, state, country, postalCode, UserId: req.user.id });
             const cart = await Cart.findAll({ where: { UserId: req.user.id } });
             const order = await Order.create({ UserId: req.user.id, AddressId: userAddress.id }, { transaction: t });
             const orderDetail = cart.map((el) => {
