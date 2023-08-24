@@ -1,15 +1,18 @@
 const midtransClient = require('midtrans-client');
-const { Cart, Order, OrderDetail } = require('../models');
-
+const { Cart, Order, OrderDetail, Address, sequelize } = require('../models');
 
 class Controller {
     static async processPayment(req, res, next) {
+        const t = await sequelize.transaction();
         try {
-            const { amount } = req.body;
+            const { amount, address } = req.body;
+            const { street, city, state, country, postalCode } = address;
+
             if (!amount) throw { name: "InvalidPaymentAmount" }
 
+            const userAddress = await Address.create({ street, city, state, country, postalCode, UserId: req.user.id });
             const cart = await Cart.findAll({ where: { UserId: req.user.id } });
-            const order = await Order.create({ UserId: req.user.id });
+            const order = await Order.create({ UserId: req.user.id, AddressId: userAddress.id }, { transaction: t });
             const orderDetail = cart.map((el) => {
                 return {
                     OrderId: order.id,
@@ -18,7 +21,7 @@ class Controller {
 
                 }
             })
-            await OrderDetail.bulkCreate(orderDetail);
+            await OrderDetail.bulkCreate(orderDetail, { transaction: t });
 
             let snap = new midtransClient.Snap({
                 isProduction: false,
@@ -42,9 +45,10 @@ class Controller {
             };
 
             const midtransToken = await snap.createTransaction(parameter);
+            await t.commit();
             res.status(200).json({ midtransToken, orderId: order.id });
         } catch (err) {
-            console.log(err);
+            await t.rollback();
             next(err);
         }
     }

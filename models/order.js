@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Order.belongsTo(models.User);
       Order.hasMany(models.OrderDetail);
+      Order.belongsTo(models.Address)
     }
   }
   Order.init({
@@ -25,6 +26,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: "UserId cannot be empty"
+        }
+      }
+    },
+    AddressId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "AddressId cannot be empty"
+        },
+        notNull: {
+          msg: "AddressId cannot be empty"
         }
       }
     }
