@@ -12,7 +12,7 @@ class Controller {
 
             const userAddress = await Address.create({ street, city, state, country, postalCode, UserId: req.user.id });
             const cart = await Cart.findAll({ where: { UserId: req.user.id } });
-            const order = await Order.create({ UserId: req.user.id, AddressId: userAddress.id }, { transaction: t });
+            const order = await Order.create({ UserId: req.user.id, AddressId: userAddress.id, totalPrice: amount }, { transaction: t });
             const orderDetail = cart.map((el) => {
                 return {
                     OrderId: order.id,

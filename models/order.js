@@ -40,6 +40,19 @@ module.exports = (sequelize, DataTypes) => {
           msg: "AddressId cannot be empty"
         }
       }
+    },
+    totalPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Total price cannot be empty"
+        },
+        notNull: {
+          msg: "Total price cannot be empty"
+        },
+        min: 0
+      }
     }
   }, {
     sequelize,
