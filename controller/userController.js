@@ -40,7 +40,7 @@ class Controller {
             if (!user) throw { name: "InvalidEmail" }
             await user.update({ isVerified: true });
 
-            res.sendStatus(200);
+            res.status(200).redirect('http://localhost:5173/login')
         } catch (err) {
             next(err)
         }
