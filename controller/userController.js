@@ -22,7 +22,7 @@ class Controller {
                 html: `
                   <h2>Thanks for registering to our site!</h2>
                   <p>Please verify your email to continue...</p>
-                  <a href='http://localhost:3000/verify-email?emailToken=${user.emailToken}'>Verify your email</a>
+                  <a href='https://ecommerce.productapic1.com/verify-email?emailToken=${user.emailToken}'>Verify your email</a>
                 `,
             };
 
@@ -40,11 +40,12 @@ class Controller {
             if (!user) throw { name: "InvalidEmail" }
             await user.update({ isVerified: true });
 
-            res.status(200).redirect('http://localhost:5173/login')
+            res.status(200).redirect('https://ecommerce-de057.web.app/login')
         } catch (err) {
             next(err)
         }
     }
+
 
     static async loginUser(req, res, next) {
         try {
