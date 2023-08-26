@@ -1,18 +1,22 @@
 [
     {
         "id": 1,
-        "name": "electronics"
+        "name": "electronics",
+        "imageUrl": "https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
         "id": 2,
-        "name": "jewelery"
+        "name": "jewelery",
+        "imageUrl": "https://images.pexels.com/photos/7992686/pexels-photo-7992686.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
         "id": 3,
-        "name": "men's clothing"
+        "name": "men's clothing",
+        "imageUrl": "https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
         "id": 4,
-        "name": "women's clothing"
+        "name": "women's clothing",
+        "imageUrl": "https://images.pexels.com/photos/934063/pexels-photo-934063.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     }
 ]
