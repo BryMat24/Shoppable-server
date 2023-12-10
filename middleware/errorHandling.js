@@ -1,7 +1,6 @@
 module.exports = (err, req, res, next) => {
     let message = "Internal server error";
     let code = 500;
-    console.log(err);
 
     if (err.name === "SequelizeValidationError") {
         message = err.errors[0].message;

@@ -3,6 +3,7 @@ const transporter = require('../helpers/transporter')
 const bcrypt = require('bcryptjs');
 const { signToken } = require('../helpers/jwt')
 const crypto = require('crypto');
+const { OAuth2Client } = require('google-auth-library');;
 
 class Controller {
     static async registerUser(req, res, next) {
@@ -62,6 +63,38 @@ class Controller {
             res.status(200).json({ access_token, user: { email: user.email } });
         } catch (err) {
             next(err);
+        }
+    }
+
+    static async googleLogin(req, res, next) {
+        try {
+            const client = new OAuth2Client();
+            const ticket = await client.verifyIdToken({
+                idToken: req.headers.google_token,
+                audience: process.env.CLIENT_ID
+            });
+            const payload = ticket.getPayload();
+            const userid = payload['sub'];
+            console.log(payload)
+            // If request specified a G Suite domain:
+            // const domain = payload['hd'];
+
+            let user = await User.findOne({ where: { email: payload.email } })
+
+            // kalo gada create
+            if (!user) {
+                user = await User.create({
+                    email: payload.email,
+                    password: (Math.random() * 10000000) + "",
+                    name: payload.email,
+                    emailToken: crypto.randomBytes(64).toString('hex')
+                })
+            }
+
+            const access_token = signToken(user);
+            res.status(200).json({ access_token, user: { name: user.name, email: user.email } });
+        } catch (err) {
+            next(err)
         }
     }
 }
